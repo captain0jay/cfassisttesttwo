@@ -138,7 +138,7 @@ const Navbar: FunctionComponent<NavbarProps> = ({ modeHandler, handleButtonClick
   }
 
   const [isChecked, setIsChecked] = useState<boolean>(false);
-  const [firstTime,setFirstTime] = useState<boolean>(false);
+  //const [firstTime,setFirstTime] = useState<boolean>(false);
 
   useEffect(() => {
     // On component mount, check if there is a cookie for the switch state
