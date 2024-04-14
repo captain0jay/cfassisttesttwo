@@ -174,25 +174,25 @@ const Navbar: FunctionComponent<NavbarProps> = ({ modeHandler, handleButtonClick
     value: username
   }));
  }
- const currentUrl = usePathname(); // Get the current pathname
- const searchParams = useSearchParams(); // Get the search parameters
- const router = useRouter()
+ //const currentUrl = usePathname(); // Get the current pathname
+ //const searchParams = useSearchParams(); // Get the search parameters
+ //const router = useRouter()
 
- useEffect(() => {
-   console.log("Mounted!");
- }, []);
+//  useEffect(() => {
+//    console.log("Mounted!");
+//  }, []);
 
- const convohandleClick = (yourVariable: any) => {
-   const id = yourVariable; // Use the variable passed to the function
-   const newSearchParams = new URLSearchParams(searchParams);
-   newSearchParams.set('id', id); // Set the 'id' query parameter
-   const urlWithId = `${currentUrl}?${newSearchParams.toString()}`; // Update the URL with the modified search parameters
-   console.log("New URL:", urlWithId);
-   window.location.search = urlWithId;
-   router.push(urlWithId);
-   handleButtonClick(); // Call the handleButtonClick function to update the URL
-   // Navigate to the updated URL or perform other actions as needed
- };
+//  const convohandleClick = (yourVariable: any) => {
+//    const id = yourVariable; // Use the variable passed to the function
+//    const newSearchParams = new URLSearchParams(searchParams);
+//    newSearchParams.set('id', id); // Set the 'id' query parameter
+//    const urlWithId = `${currentUrl}?${newSearchParams.toString()}`; // Update the URL with the modified search parameters
+//    console.log("New URL:", urlWithId);
+//    window.location.search = urlWithId;
+//    router.push(urlWithId);
+//    handleButtonClick(); // Call the handleButtonClick function to update the URL
+//    // Navigate to the updated URL or perform other actions as needed
+//  };
 
   return (
     <>
