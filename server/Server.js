@@ -16,6 +16,7 @@ app.use(cors());
 
 // Route for chat
 app.post('/chat', async function (req, res) {
+    console.log(req.body);
     const textgive = req.body.text; // Access text from req.body
     const finalResponse = await makePostRequest(textgive);
      // Construct the response object
