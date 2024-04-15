@@ -7,6 +7,7 @@ const { uploadAudio } = require('./scripts/transcribe');
 const { uploadImage } = require('./scripts/imagetotext');
 const makePostRequest = require('./scripts/chat');
 const app = express();
+const path = require('path');
 
 require('dotenv').config();
 
