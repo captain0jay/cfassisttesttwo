@@ -36,18 +36,10 @@ app.post('/chatimagetotext', async function (req, res) {
         }
 
         const imageData = req.body.image;
-        const base64Data = imageData.replace(/^data:image\/png;base64,/, ''); // Remove header from base64 data
-        const imageName = uuidv4() + '.png'; // Generate a random name for the image file
-        const imagePath = `./images/${imageName}`;
-
-        // Save the image
-        await saveImage(imagePath, base64Data);
-
-        // Transcribe audio
         const transcription = req.body.text;
 
         // Upload image and transcription
-        const answerToGiveUser = await uploadImage(imageName, transcription);
+        const answerToGiveUser = await uploadImage(imageData, transcription);
         
         // Construct the response object
         const responseObject = {
@@ -55,7 +47,6 @@ app.post('/chatimagetotext', async function (req, res) {
             cfassist: answerToGiveUser
         };
 
-        //await deleteFile(imagePath); // Delete the image file after use
         // Send response as JSON object
         res.status(200).json(responseObject);
     } catch (error) {
@@ -63,6 +54,7 @@ app.post('/chatimagetotext', async function (req, res) {
         res.status(500).json({ error: 'An error occurred during processing' });
     }
 });
+
 
 app.post('/imagetotext', async function (req, res) {
     try {
@@ -72,12 +64,6 @@ app.post('/imagetotext', async function (req, res) {
         }
 
         const imageData = req.body.image;
-        const base64Data = imageData.replace(/^data:image\/png;base64,/, ''); // Remove header from base64 data
-        const imageName = uuidv4() + '.png'; // Generate a random name for the image file
-        const imagePath = `./images/${imageName}`;
-
-        // Save the image
-        await saveImage(imagePath, base64Data);
 
         // Check if audio data is missing
         const audio = req.body.audio;
@@ -89,7 +75,7 @@ app.post('/imagetotext', async function (req, res) {
         const transcription = await transcribeAudio(audio);
 
         // Upload image and transcription
-        const answerToGiveUser = await uploadImage(imageName, transcription);
+        const answerToGiveUser = await uploadImage(imageData, transcription);
         
         // Construct the response object
         const responseObject = {
@@ -97,7 +83,6 @@ app.post('/imagetotext', async function (req, res) {
             cfassist: answerToGiveUser
         };
 
-        //await deleteFile(imagePath); // Delete the image file after use
         // Send response as JSON object
         res.status(200).json(responseObject);
     } catch (error) {
@@ -105,22 +90,6 @@ app.post('/imagetotext', async function (req, res) {
         res.status(500).json({ error: 'An error occurred during processing' });
     }
 });
-
-// Function to save image to the file system
-// Function to save image to the file system
-async function saveImage(imagePath, base64Data) {
-    return new Promise((resolve, reject) => {
-        fs.writeFile(imagePath, base64Data, 'base64', function (err) {
-            if (err) {
-                console.error(err);
-                reject('Error saving image');
-            } else {
-                console.log('Image saved successfully');
-                resolve();
-            }
-        });
-    });
-}
 
 // Function to transcribe audio
 async function transcribeAudio(audioData) {
@@ -133,34 +102,14 @@ async function transcribeAudio(audioData) {
                 return;
             }
 
-            const audioName = uuidv4() + '.mp3'; // Generate a random name for the audio file
-            const audioPath = `./audio/${audioName}`;
-
-            // Save the audio
-            await fs.promises.writeFile(audioPath, audio, 'base64');
-
-            console.log('Audio saved successfully');
-
             // Upload audio and get transcription
-            const transcription = await uploadAudio(audioName);
-
-            await deleteFile(audioPath);
+            const transcription = await uploadAudio(audio);
 
             resolve(transcription);
         } catch (error) {
             console.error('Error transcribing audio:', error);
             reject('Error transcribing audio');
         }
-    });
-}
-
-async function deleteFile(filePath) {
-    fs.unlink(filePath, (err) => {
-      if (err) {
-        console.error(`Error deleting file: ${err}`);
-        return;
-      }
-      console.log('File deleted successfully');
     });
 }
 
@@ -173,12 +122,7 @@ app.post('/transcribe', async function (req, res) {
         return;
     }
 
-    const audioName = uuidv4() + '.mp3'; // Generate a random name for the audio file
-    const audioPath = `./audio/${audioName}`;
-
-    await fs.promises.writeFile(audioPath, audio, 'base64');
-
-    const gottext = await uploadAudio(audioName);
+    const gottext = await uploadAudio(audio);
     console.log(gottext);
     const responseofchat = await makePostRequest(gottext);
     console.log(responseofchat);
@@ -188,7 +132,6 @@ app.post('/transcribe', async function (req, res) {
         cfassist: responseofchat
     };
 
-    //await deleteFile(audioPath); // Delete the audio file after use
     // Send response as JSON object
     res.status(200).json(responseObject);
 });

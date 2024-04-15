@@ -1,11 +1,7 @@
-const fs = require('fs');
-
 require('dotenv').config();
 
-async function uploadAudio(audioFileName) {
+async function uploadAudio(audioData) {
   try {
-    const audioPath = `./audio/${audioFileName}`;
-    const audioData = fs.readFileSync(audioPath);
     const url = `https://api.cloudflare.com/client/v4/accounts/${process.env.CLOUDFLARE_APP_ID}/ai/run/@cf/openai/whisper`;
 
     const { default: fetch } = await import('node-fetch');
@@ -28,13 +24,3 @@ async function uploadAudio(audioFileName) {
 }
 
 module.exports = { uploadAudio };
-// Example usage:
-// Replace 'audioFileName.mp3' with the name of the audio file you want to upload
-// const audioFileName = 'a3d2acb5-768d-4d9c-ab28-a3af9b8e5580.mp3';
-// uploadAudio(audioFileName)
-//   .then(response => {
-//     console.log('Upload response:', response);
-//   })
-//   .catch(error => {
-//     console.error('Error:', error);
-//   });
