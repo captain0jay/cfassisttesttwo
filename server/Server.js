@@ -7,7 +7,6 @@ const { uploadAudio } = require('./scripts/transcribe');
 const { uploadImage } = require('./scripts/imagetotext');
 const makePostRequest = require('./scripts/chat');
 const app = express();
-const path = require('path');
 
 require('dotenv').config();
 
@@ -39,7 +38,7 @@ app.post('/chatimagetotext', async function (req, res) {
         const imageData = req.body.image;
         const base64Data = imageData.replace(/^data:image\/png;base64,/, ''); // Remove header from base64 data
         const imageName = uuidv4() + '.png'; // Generate a random name for the image file
-        let imagePath = path.join(process.cwd(), `server/images/${imageName}`);
+        const imagePath = `./images/${imageName}`;
 
         // Save the image
         await saveImage(imagePath, base64Data);
@@ -75,7 +74,7 @@ app.post('/imagetotext', async function (req, res) {
         const imageData = req.body.image;
         const base64Data = imageData.replace(/^data:image\/png;base64,/, ''); // Remove header from base64 data
         const imageName = uuidv4() + '.png'; // Generate a random name for the image file
-        let imagePath = path.join(process.cwd(), `server/images/${imageName}`);
+        const imagePath = `./images/${imageName}`;
 
         // Save the image
         await saveImage(imagePath, base64Data);
@@ -135,7 +134,7 @@ async function transcribeAudio(audioData) {
             }
 
             const audioName = uuidv4() + '.mp3'; // Generate a random name for the audio file
-            let audioPath = path.join(process.cwd(), `server/audio/${audioName}`);
+            const audioPath = `./audio/${audioName}`;
 
             // Save the audio
             await fs.promises.writeFile(audioPath, audio, 'base64');
@@ -175,7 +174,7 @@ app.post('/transcribe', async function (req, res) {
     }
 
     const audioName = uuidv4() + '.mp3'; // Generate a random name for the audio file
-    let audioPath = path.join(process.cwd(), `server/audio/${audioName}`);
+    const audioPath = `./audio/${audioName}`;
 
     await fs.promises.writeFile(audioPath, audio, 'base64');
 

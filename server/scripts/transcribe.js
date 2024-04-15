@@ -1,11 +1,10 @@
 const fs = require('fs');
-const path = require('path');
 
 require('dotenv').config();
 
 async function uploadAudio(audioFileName) {
   try {
-    let audioPath = path.join(process.cwd(), `server/audio/${audioFileName}`);
+    const audioPath = `./audio/${audioFileName}`;
     const audioData = fs.readFileSync(audioPath);
     const url = `https://api.cloudflare.com/client/v4/accounts/${process.env.CLOUDFLARE_APP_ID}/ai/run/@cf/openai/whisper`;
 

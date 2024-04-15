@@ -1,10 +1,9 @@
 const fs = require('fs');
-const path = require('path');
 require('dotenv').config();
 
 async function uploadImage(imageFileName, promptext) {
   try {
-    let imagePath = path.join(process.cwd(), `server/images/${imageFileName}`);
+    const imagePath = `./images/${imageFileName}`;
     const imageData = fs.readFileSync(imagePath);
     const url = `https://api.cloudflare.com/client/v4/accounts/${process.env.CLOUDFLARE_APP_ID}/ai/run/@cf/unum/uform-gen2-qwen-500m`;
 
