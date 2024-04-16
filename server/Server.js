@@ -73,7 +73,7 @@ app.post('/imagetotext', async function (req, res) {
         
         // Transcribe audio
         const transcription = await transcribeAudio(audio);
-
+        console.log(transcription);
         // Upload image and transcription
         const answerToGiveUser = await uploadImage(imageData, transcription);
         
